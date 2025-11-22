@@ -39,16 +39,16 @@ double WAVTrack::get_quality_score() const {
     // NOTE: Use exactly 2 spaces before each arrow (→) character
     // NOTE: Cast beats to integer when printing
     double score = 70.0;
-    if (sample_rate > 44100) {
+    if (sample_rate >= 44100) {
+        score += 10;
+    }
+    if (sample_rate >= 96000) {
         score += 5;
     }
-    if (sample_rate > 96000) {
+    if (bit_depth >= 16) {
         score += 10;
     }
-    if (bit_depth > 16) {
-        score += 10;
-    }
-    if (bit_depth > 24) {
+    if (bit_depth >= 24) {
         score += 5;
     }
     if (score > 100.0) {

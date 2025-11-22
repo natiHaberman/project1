@@ -48,9 +48,7 @@ double MP3Track::get_quality_score() const {
     }
     if (has_id3_tags) {
         score += 5; // בונוס
-    } else {
-        score -= 5; // קנס
-    }if (score > 100.0) {
+    } if (score > 100.0) {
         score = 100.0;
     } else if (score < 0.0) {
         score = 0.0;
