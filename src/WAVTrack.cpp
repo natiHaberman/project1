@@ -49,6 +49,16 @@ double WAVTrack::get_quality_score() const {
         score += 10;
     }
     if (bit_depth > 24) {
+    if (sample_rate >= 44100) {
+        score += 10;
+    }
+    if (sample_rate >= 96000) {
+        score += 5;
+    }
+    if (bit_depth >= 16) {
+        score += 10;
+    }
+    if (bit_depth >= 24) {
         score += 5;
     }
     if (score > 100.0) {
