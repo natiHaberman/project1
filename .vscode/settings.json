@@ -41,7 +41,8 @@
         "*.h": "cpp",
         "*.cpp": "cpp",
         "*.txt": "plaintext",
-        "stdexcept": "cpp"
+        "stdexcept": "cpp",
+        "iostream": "cpp"
     },
     
     // Editor settings for academic integrity

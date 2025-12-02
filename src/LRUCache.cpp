@@ -1,5 +1,7 @@
 #include "LRUCache.h"
 #include <iostream>
+#include <limits>
+
 
 LRUCache::LRUCache(size_t capacity)
     : slots(capacity), max_size(capacity), access_counter(0) {}
@@ -18,7 +20,33 @@ AudioTrack* LRUCache::get(const std::string& track_id) {
  * TODO: Implement the put() method for LRUCache
  */
 bool LRUCache::put(PointerWrapper<AudioTrack> track) {
-    return false; // Placeholder
+    if (!track) {
+        return false;
+    }
+
+    // Check if track already exists (by title)
+    AudioTrack* raw = track.get();
+    const std::string title = raw->get_title();
+    size_t existing = findSlot(title);
+    if (existing != max_size) {
+        // Refresh MRU timestamp
+        slots[existing].access(++access_counter);
+        return false;
+    }
+
+    bool evicted = false;
+
+    if (isFull()) {
+        evicted = evictLRU();
+    }
+
+    size_t empty_idx = findEmptySlot();
+    if (empty_idx == max_size) {
+        return evicted; 
+    }
+
+    slots[empty_idx].store(std::move(track), ++access_counter);
+    return evicted;
 }
 
 bool LRUCache::evictLRU() {
@@ -64,7 +92,27 @@ size_t LRUCache::findSlot(const std::string& track_id) const {
  * TODO: Implement the findLRUSlot() method for LRUCache
  */
 size_t LRUCache::findLRUSlot() const {
-    return 0; // Placeholder
+
+    size_t lru_index = max_size;    
+    uint64_t min_access = 0;        
+    bool found = false;             
+
+    for (size_t i = 0; i < max_size; ++i) {
+        if (!slots[i].isOccupied()) {
+            continue;
+        }
+
+        uint64_t access_time = slots[i].getLastAccessTime();
+
+        if (!found || access_time < min_access) {
+            found = true;
+            min_access = access_time;
+            lru_index = i;
+        }
+    }
+
+    return lru_index;
+
 }
 
 size_t LRUCache::findEmptySlot() const {
