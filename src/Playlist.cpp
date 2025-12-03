@@ -8,6 +8,9 @@ Playlist::Playlist(const std::string& name)
 }
 // TODO: Fix memory leaks!
 // Students must fix this in Phase 1
+
+// Playlist owns nodes and deletes them by iterating through first getting next and then deleting current
+
 Playlist::~Playlist() {
     PlaylistNode* current =head;
     PlaylistNode* nextNode;
@@ -23,14 +26,13 @@ Playlist::~Playlist() {
     std::cout << "Destroying playlist: " << playlist_name << std::endl;
     #endif
 }
+
+// PlaylistNode owns track
+
 PlaylistNode::~PlaylistNode() {
-    if(next!=nullptr){
-        delete next;
-        next=nullptr;
-    }
-    if(track!=nullptr){
+   if (track != nullptr) {
         delete track;
-        track=nullptr;
+        track = nullptr;
     }
 }
 

@@ -33,8 +33,7 @@ void MP3Track::analyze_beatgrid() {
     // NOTE: Use exactly 2 spaces before each arrow (→) character
     double estimated_beats = (duration_seconds / 60.0) * bpm;
     double precision_factor = (double)bitrate / 320.0;
-    std::cout << "  -> Estimated beats: " << estimated_beats << " estimated" << std::endl;
-    std::cout << "  -> Compression precision factor: " << precision_factor << std::endl;
+    std::cout << "  -> Estimated beats: " << estimated_beats << "  -> Compression precision factor: " << precision_factor << std::endl;
 
 }
 
@@ -47,7 +46,7 @@ double MP3Track::get_quality_score() const {
         score -= 10;
     }
     if (has_id3_tags) {
-        score += 5; // בונוס
+        score += 5;
     } if (score > 100.0) {
         score = 100.0;
     } else if (score < 0.0) {
@@ -56,6 +55,9 @@ double MP3Track::get_quality_score() const {
     
     return score;
 }
+
+//Creates a new Mp3Track with the the data from the input, wraps in a pointerwrapper and returns it.
+// Is used instead of copy because it dynammically copies 
 
 PointerWrapper<AudioTrack> MP3Track::clone() const {
     // TODO: Implement polymorphic cloning

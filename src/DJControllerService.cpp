@@ -12,12 +12,15 @@ DJControllerService::DJControllerService(size_t cache_size)
 int DJControllerService::loadTrackToCache(AudioTrack& track) {
     const std::string title = track.get_title();
 
+    //HIT: refresh status and return 1
+
     if (cache.contains(title)) {
         cache.get(title);
         return 1;
     }
 
-    // MISS: clone and prepare track before caching
+    // MISS: clone and prepare track before caching. return -1 on eviction and 0 without eviction
+    
     PointerWrapper<AudioTrack> cloned = track.clone();
     if (!cloned) {
         std::cerr << "[ERROR] Track: \"" << title << "\" failed to clone\n";

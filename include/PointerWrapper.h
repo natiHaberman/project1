@@ -63,6 +63,9 @@ public:
      * HINT: How should ownership transfer from one wrapper to another?
      * What should happen to the source wrapper after the move?
      */
+
+     // copies others pointer to this and assigns others pointer nullptr
+
     PointerWrapper(PointerWrapper&& other) noexcept : ptr(other.ptr) {
         other.ptr = nullptr;
     }
@@ -72,6 +75,9 @@ public:
      * HINT: Handle cleanup of current resource and ownership transfer
      * Don't forget about self-assignment!
      */
+
+     //Checks that this!=other and if so deletes this and assigns this as others ptr.
+
     PointerWrapper& operator=(PointerWrapper&& other) noexcept {
         if (this != &other) {
             delete ptr;
@@ -89,9 +95,11 @@ public:
      * @throws std::runtime_error if ptr is null
      */
 
+     // Checks that pointer exists and returns reference of object
+
     T& operator*() const {
         if (!ptr) {
-            throw std::runtime_error("Dereferencing null PointerWrapper");
+            throw std::runtime_error("[ERROR] Dereferencing null PointerWrapper");
         }
         return *ptr;
     };
@@ -101,9 +109,12 @@ public:
      * HINT: How do you access members of the wrapped object?
      * What safety checks should you perform?
      */
+
+    // Checks that pointer exists and returns raw pointer
+
     T* operator->() const {
         if (!ptr) {
-            throw std::runtime_error("Accessing null PointerWrapper");
+            throw std::runtime_error("[ERROR] Accessing null PointerWrapper");
         }
         return ptr;
     }
@@ -114,9 +125,12 @@ public:
      * What should this function return?
      * @throws std::runtime_error if ptr is null
      */
+
+
+
     T* get() const {
         if (!ptr) {
-            throw std::runtime_error("Getting null PointerWrapper");
+            throw std::runtime_error("[ERROR] Getting null PointerWrapper");
         }
         return ptr;
     }
@@ -128,6 +142,9 @@ public:
      * HINT: What does "release" mean in terms of ownership?
      * Should the wrapper still own the pointer after calling release()?
      */
+
+     // deletes and returns the raw pointer
+
     T* release() {
         T* raw = ptr;
         ptr = nullptr;
@@ -139,6 +156,9 @@ public:
      * HINT: How do you replace the currently wrapped pointer?
      * What should happen to the old pointer?
      */
+
+     // sets the raw pointer to the input. If no inputs sets to nullptr
+
     void reset(T* new_ptr = nullptr) {
         if (ptr != new_ptr) {
             delete ptr;
@@ -153,6 +173,9 @@ public:
      * HINT: When should a wrapper be considered "true" or "false"?
      * Why might the explicit keyword be important here?
      */
+
+     // pointer is truthy if not null
+
     explicit operator bool() const {
         return ptr != nullptr;
     }
@@ -183,6 +206,10 @@ PointerWrapper<T> make_pointer_wrapper(Args&&... args) {
  * HINT: How can you swap two wrapper objects?
  * Why might this be useful?
  */
+
+
+//Uses the already implemented member function
+
 template<typename T>
 void swap(PointerWrapper<T>& lhs, PointerWrapper<T>& rhs) noexcept {
     // TODO: Implement global swap function

@@ -30,6 +30,8 @@ AudioTrack::AudioTrack(const std::string& title, const std::vector<std::string>&
 
 // ========== TODO: STUDENTS IMPLEMENT RULE OF 5 ==========
 
+//AudioTrack owns and therefore destroys waveform_data
+
 AudioTrack::~AudioTrack() {
     // TODO: Implement the destructor
     #ifdef DEBUG
@@ -41,6 +43,8 @@ AudioTrack::~AudioTrack() {
     }
     waveform_data=nullptr;
 }
+
+// Copys the audio track. We use std::memcpy in order to copy and not reuse the data
 
 AudioTrack::AudioTrack(const AudioTrack& other)
 {
@@ -62,6 +66,8 @@ AudioTrack::AudioTrack(const AudioTrack& other)
         waveform_data = nullptr;
     }
 }
+
+// Similarly compies for assignment operator
 
 AudioTrack& AudioTrack::operator=(const AudioTrack& other) {
     // TODO: Implement the copy assignment operator
@@ -89,6 +95,8 @@ AudioTrack& AudioTrack::operator=(const AudioTrack& other) {
     return *this;
 }
 
+// Moves the data from other to the new AudioTrack
+
 AudioTrack::AudioTrack(AudioTrack&& other) noexcept {
     // TODO: Implement the move constructor
     #ifdef DEBUG
@@ -104,6 +112,8 @@ AudioTrack::AudioTrack(AudioTrack&& other) noexcept {
     other.waveform_data = nullptr;
     other.waveform_size = 0;
 }
+
+// Moves data for assignment operator
 
 AudioTrack& AudioTrack::operator=(AudioTrack&& other) noexcept {
     // TODO: Implement the move assignment operator
